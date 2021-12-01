@@ -7,6 +7,20 @@ import math
 import time
 import numpy as np
 import cv2
-def circle():
+from queue import Queue
+from threading import Thread
+# A thread that produces data
+d = 0
+def producer():
+    global d
     while True:
-        print("练习2被调用")
+        d += 1
+
+
+
+
+
+
+
+
+# Create the shared queue and launch both threads
