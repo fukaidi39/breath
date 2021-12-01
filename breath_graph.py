@@ -126,12 +126,7 @@ class breath(QMainWindow, Ui_breath):
         self.pStart = 1 #运动历史图第一次获取图片
         self.color = "r"
         self.high = 0
-        self.high_yu = 0
-        self.high_time = 0
         self.low = 0
-        self.low_yu = 0
-        self.low_time = 0
-        self.yu_time = 0
         self.Time = 0
         self.amplitude = 2
         self.control = 0 #当满足呼吸门控的时候为1
