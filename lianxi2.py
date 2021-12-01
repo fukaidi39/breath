@@ -6,9 +6,7 @@ import threading
 import math
 import time
 import numpy as np
-
-history = np.zeros(5)
-print(history)
-i = 0
-history[i] = 1
-print(history)
+import cv2
+def circle():
+    while True:
+        print("练习2被调用")

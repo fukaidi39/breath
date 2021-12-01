@@ -53,7 +53,7 @@ while cap.isOpened():
             hsv = cv2.cvtColor(gs_frame, cv2.COLOR_BGR2HSV)                 # 转化成HSV图像
             erode_hsv = cv2.erode(hsv, None, iterations=2)                   # 腐蚀 粗的变细
             #将绿色以外的其他部分去掉，并将图像转换成二值化图像
-            inRange_hsv = cv2.inRange(erode_hsv, color_dist[ball_color]['Lower'], color_dist[ball_color]['Upper'])
+            inRange_hsv = (erode_hsv, color_dist[ball_color]['Lower'], color_dist[ball_color]['Upper'])
             #检测二值化图像中的物体轮廓，只检测外部的轮廓
             cnts = cv2.findContours(inRange_hsv.copy(), cv2.RETR_EXTERNAL,
                                     cv2.CHAIN_APPROX_SIMPLE)[-2]

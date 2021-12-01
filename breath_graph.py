@@ -8,6 +8,7 @@ import pyqtgraph as pg
 import queue
 from GUI import Ui_breath
 import sys
+from scipy import signal
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
 import time
@@ -60,7 +61,7 @@ class Square:
                       'blue': {'Lower': np.array([100, 80, 46]),
                                'Upper': np.array([124, 255, 255])},
                       'green': {'Lower': np.array([35, 43, 35]),
-                                'Upper': np.array([90, 255, 255])},
+                                'Upper': np.array([77, 255, 255])},
                       'black': {'Lower': np.array([0, 0, 0]),
                                 'Upper': np.array([180, 255, 46])}
                       }
@@ -114,6 +115,7 @@ class breath(QMainWindow, Ui_breath):
         self.CAM_NUM = 0
         self.length = 50
         self.history = np.zeros(self.length)
+        self.history1 = np.zeros(self.length)
         self.i = 0
         self.flag = 1  #开始检测的标志
         self.high_flag = 0
@@ -131,7 +133,7 @@ class breath(QMainWindow, Ui_breath):
         self.low_time = 0
         self.yu_time = 0
         self.Time = 0
-        self.amplitude = 0
+        self.amplitude = 2
         self.control = 0 #当满足呼吸门控的时候为1
         self.setupUi(self)
         self.start.clicked.connect(self.display)
@@ -159,7 +161,6 @@ class breath(QMainWindow, Ui_breath):
 
     def show_camera(self):
         flag, self.image = self.cap.read()
-        print(time.time())
         show = cv2.resize(self.image, (640, 480))
         pixel_show = show.copy()
         if self.pStart:
@@ -181,33 +182,41 @@ class breath(QMainWindow, Ui_breath):
                 self.flag = 0
             if self.i < self.length:
                 self.history[self.i] = -(y - self.y_init)
-                self.detect_curve(pixel, self.history[self.i]*3, 0)
+                self.detect_curve(pixel, self.history[self.i]*3, 0,0)
             self.i += 1
             if self.i > self.length:
                 self.history[:-1] = self.history[1:]
                 self.history[-1] = -(y - self.y_init)
+                self.history1 = signal.savgol_filter(self.history,49,2)
                 if pixel > 20:
                     self.y_init = y
                     self.history[-1] = 0
+                    self.history1[-1] = 0
                     pixel = 20
-                elif pixel < 0.2 and self.history[-1] < self.history[0]:
+                elif pixel < 0.2 and self.history1[-1] < self.history1[0]:
                     if self.low_flag:
-                        self.low = self.history[-1]
-                        print("最低值的坐标是：", self.low,"50个之前的值是",self.history[0])
+                        self.low = self.history1[-1]
+                        print("最低值的坐标是：", self.low,"50个之前的值是",self.history1[0])
                         self.low_flag = 0
                         self.high_flag = 1
-                elif pixel < 0.2 and self.high_flag and self.history[-1]:
-                    self.high = self.history[-1]
-                    print("最高值的坐标是：",self.high,"50个之前的值是",self.history[0])
+                elif pixel < 0.2 and self.high_flag and self.history1[-1]:
+                    self.high = self.history1[-1]
+                    print("最高值的坐标是：",self.high,"50个之前的值是",self.history1[0])
                     self.high_flag = 0
                     self.low_flag = 1
-                self.amplitude = self.high - self.low
                 if self.high != 0 and self.low != 0:
-                    if (self.history[-1]-self.low) <= 0.1*self.amplitude:
+                    temp = self.high - self.low
+                    #第一次需要大于2，否则峰谷值就是2
+                    if temp > 2:
+                        self.amplitude = temp
+                        print("峰谷值是：", self.amplitude)
+                    else:
+                        print("呼吸起伏过低，或者呼吸曲线下降，请调整呼吸")
+                    if (self.high - self.history1[-1]) >= 0.8*self.amplitude:
                         self.control = 3
                     else:
                         self.control = 0
-                self.detect_curve(pixel,self.history[-1]*3,self.control)
+                self.detect_curve(pixel,self.history[-1]*3,self.control,self.history1[-1]*3)
 
     def detect_set(self):
         self.det_start = 1
@@ -232,23 +241,29 @@ class breath(QMainWindow, Ui_breath):
         self.curve2 = self.p1.plot(self.y2,pen=self.color)
         self.y3 = np.zeros(300)
         self.curve3 = self.p1.plot(self.y3, pen='y')
+        self.y4 = np.zeros(300)
+        self.curve4 = self.p1.plot(self.y4, pen='g')
         self.ptr = 0
 
 
-    def detect_curve(self,p,dy,control):
+    def detect_curve(self,p,dy,control,h1):
         self.y1[:-1] = self.y1[1:]
         self.y2[:-1] = self.y2[1:]
         self.y3[:-1] = self.y3[1:]
+        self.y4[:-1] = self.y4[1:]
         self.y1[-1] = p
         self.y2[-1] = dy
         self.y3[-1] = control
+        self.y4[-1] = h1
         self.ptr += 1
         self.curve1.setData(self.y1)
         self.curve2.setData(self.y2)
         self.curve3.setData(self.y3)
+        self.curve4.setData(self.y4)
         self.curve1.setPos(self.ptr,0)
         self.curve2.setPos(self.ptr,0)
         self.curve3.setPos(self.ptr,0)
+        self.curve4.setPos(self.ptr,0)
 
 
     def close(self):
