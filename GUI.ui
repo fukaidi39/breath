@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1324</width>
-    <height>962</height>
+    <width>1012</width>
+    <height>830</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,10 +17,10 @@
    <widget class="QFrame" name="left">
     <property name="geometry">
      <rect>
-      <x>9</x>
-      <y>9</y>
-      <width>641</width>
-      <height>481</height>
+      <x>40</x>
+      <y>30</y>
+      <width>451</width>
+      <height>361</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -34,8 +34,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>641</width>
-       <height>481</height>
+       <width>451</width>
+       <height>361</height>
       </rect>
      </property>
      <property name="frameShape">
@@ -52,10 +52,10 @@
    <widget class="QFrame" name="right">
     <property name="geometry">
      <rect>
-      <x>670</x>
-      <y>10</y>
-      <width>641</width>
-      <height>481</height>
+      <x>510</x>
+      <y>30</y>
+      <width>451</width>
+      <height>361</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -69,8 +69,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>641</width>
-       <height>481</height>
+       <width>451</width>
+       <height>361</height>
       </rect>
      </property>
      <property name="frameShape">
@@ -87,8 +87,8 @@
    <widget class="QPushButton" name="start">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>870</y>
+      <x>80</x>
+      <y>740</y>
       <width>121</width>
       <height>41</height>
      </rect>
@@ -100,8 +100,8 @@
    <widget class="QPushButton" name="stop">
     <property name="geometry">
      <rect>
-      <x>420</x>
-      <y>870</y>
+      <x>270</x>
+      <y>740</y>
       <width>111</width>
       <height>41</height>
      </rect>
@@ -113,8 +113,8 @@
    <widget class="QPushButton" name="detect">
     <property name="geometry">
      <rect>
-      <x>850</x>
-      <y>870</y>
+      <x>630</x>
+      <y>740</y>
       <width>111</width>
       <height>41</height>
      </rect>
@@ -123,26 +123,26 @@
      <string>detect</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="exit">
+   <widget class="QPushButton" name="gate">
     <property name="geometry">
      <rect>
-      <x>1050</x>
-      <y>870</y>
+      <x>810</x>
+      <y>740</y>
       <width>101</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>exit</string>
+     <string>gate</string>
     </property>
    </widget>
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>9</x>
-      <y>509</y>
-      <width>1301</width>
-      <height>351</height>
+      <x>40</x>
+      <y>400</y>
+      <width>921</width>
+      <height>331</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="graph_layout"/>
@@ -153,7 +153,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1324</width>
+     <width>1012</width>
      <height>23</height>
     </rect>
    </property>

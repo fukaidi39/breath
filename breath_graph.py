@@ -232,8 +232,8 @@ class breath(QMainWindow, Ui_breath):
         self.p1.setLabel('bottom', text='time')  # x轴设置函数
         self.y1 = np.zeros(300)
         self.curve1 = self.p1.plot(self.y1)
-        self.y2 = np.zeros(300)
-        self.curve2 = self.p1.plot(self.y2,pen=self.color)
+        # self.y2 = np.zeros(300)
+        # self.curve2 = self.p1.plot(self.y2,pen=self.color)
         self.y3 = np.zeros(300)
         self.curve3 = self.p1.plot(self.y3, pen='y')
         self.y4 = np.zeros(300)
@@ -243,20 +243,20 @@ class breath(QMainWindow, Ui_breath):
 
     def detect_curve(self,p,dy,control,h1):
         self.y1[:-1] = self.y1[1:]
-        self.y2[:-1] = self.y2[1:]
+        # self.y2[:-1] = self.y2[1:]
         self.y3[:-1] = self.y3[1:]
         self.y4[:-1] = self.y4[1:]
         self.y1[-1] = p
-        self.y2[-1] = dy
+        # self.y2[-1] = dy
         self.y3[-1] = control
         self.y4[-1] = h1
         self.ptr += 1
         self.curve1.setData(self.y1)
-        self.curve2.setData(self.y2)
+        # self.curve2.setData(self.y2)
         self.curve3.setData(self.y3)
         self.curve4.setData(self.y4)
         self.curve1.setPos(self.ptr,0)
-        self.curve2.setPos(self.ptr,0)
+        # self.curve2.setPos(self.ptr,0)
         self.curve3.setPos(self.ptr,0)
         self.curve4.setPos(self.ptr,0)
 
@@ -270,8 +270,9 @@ class breath(QMainWindow, Ui_breath):
 
 
 ##main 函数
-if __name__ == '__main__':
+def breath_gate():
     app = QApplication(sys.argv)
     ui = breath()
     ui.show()
     sys.exit(app.exec_())
+breath_gate()
